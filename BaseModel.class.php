@@ -48,10 +48,10 @@ class BaseModel extends Model implements ArrayAccess
         return $status;
     }
 
-    public function toArray(){
+    public function toArray($source = false){
         $data = [];
         foreach($this->data as $key => $item){
-            $data[$key] = $this->getAttr($key);
+            $data[$key] = $this->getAttr($key, $source);
         }
         return $data;
     }

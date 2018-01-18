@@ -9,8 +9,6 @@
 
 namespace Extend\Base;
 
-use Exception;
-
 class Register
 {
     private static $map;

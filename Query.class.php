@@ -43,12 +43,12 @@ trait Query
         /** @var BaseModel $query */
         if(is_object($varArray[0]) && ($varArray[0] instanceof BaseModel)){
             $query = $varArray[0];
-            $page = $varArray[1];
+            $page = $varArray[1] ?: 1;
             $list_row = $varArray[2];
             static::$query = $query;
         }else{
             $query = new static();
-            $page = $varArray[0];
+            $page = $varArray[0] ?: 1;
             $list_row = $varArray[1] ?: 15;
         }
         $list = $query->page($page, $list_row)->select();
@@ -68,16 +68,30 @@ trait Query
         return $show;
     }
 
+    public static function nextPage($page){
+        $page = $page ?: 1;
+        $next_page = [
+            "method" => 'GET',
+            "href" => C('TP_URL').ltrim(__ACTION__,'/'). '/page/'.++$page,
+        ];
+        return $next_page;
+    }
+
     /**
-     * @param int $id
+     * @param null $query
      * @return BaseModel|Query|static
      * @throws ModelException
      */
-    public static function get($id = null)
+    public static function get($query = null)
     {
-        $obj = new static();
-        if(!$id) return $obj;
-        $obj->find($id);
-        return $obj;
+        if(is_object($query) && $query instanceof BaseModel) {
+            $obj = $query;
+        }else{
+            $obj = new static();
+            if(!is_numeric($query)) return $obj;
+            return $obj->find($query);
+        }
+
+        return $obj->find();
     }
 }

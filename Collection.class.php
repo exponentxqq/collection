@@ -32,21 +32,11 @@ class Collection implements ArrayAccess, Countable, JsonSerializable, Iterator
         return $this->model = $model;
     }
 
-    public function paginate($where = [], $list_row = 15){
-        if($where){
-            $this->model->where($where);
-        }
-        $count = $this->model->count();
-        $page = new Page($count, $list_row);
-        $show = $page->show();
-        return $show;
-    }
-
-    public function toArray()
+    public function toArray($source = false)
     {
-        return array_map(function ($value) {
+        return array_map(function ($value) use ($source) {
             return ($value instanceof BaseModel || $value instanceof self) ?
-                $value->toArray() :
+                $value->toArray($source) :
                 $value;
         }, $this->items);
     }
