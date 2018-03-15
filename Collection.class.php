@@ -28,8 +28,7 @@ class Collection implements ArrayAccess, Countable, JsonSerializable, Iterator
     {
         return array_map(function ($value) use ($source) {
             return ($value instanceof BaseModel || $value instanceof self) ?
-                $value->toArray($source) :
-                $value;
+                $value->toArray($source) : $value;
         }, $this->items);
     }
 
