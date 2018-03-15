@@ -13,7 +13,6 @@ use ArrayAccess;
 use Iterator;
 use Countable;
 use JsonSerializable;
-use Think\Page;
 
 class Collection implements ArrayAccess, Countable, JsonSerializable, Iterator
 {
